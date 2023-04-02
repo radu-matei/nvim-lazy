@@ -1,6 +1,9 @@
 -- Enable relative line numbers
 vim.opt.relativenumber = true
 
+vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR> ', { desc = '[C]lose Buffer' })
+vim.keymap.set('n', '<leader>q', '[[<C-w>q]] ', { desc = '[Q]uit current window' })
+
 -- Resume latest Telescope window
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
@@ -30,11 +33,11 @@ vim.keymap.set('n', '<leader>tt', '<Cmd>TroubleToggle<CR> ', { desc = '[T]oggle 
 vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR> ', { desc = '[C]lose Buffer' })
 
 vim.keymap.set('n', '<leader>tf', '<Cmd>ToggleTerm direction=float<CR> ',
-	{ desc = 'Open [T]erminal in [F]loating split' })
+    { desc = 'Open [T]erminal in [F]loating split' })
 vim.keymap.set('n', '<leader>tv', '<Cmd>ToggleTerm size=80 direction=vertical<CR> ',
-	{ desc = 'Open [T]erminal in [V]ertical split' })
+    { desc = 'Open [T]erminal in [V]ertical split' })
 vim.keymap.set('n', '<leader>th', '<Cmd>ToggleTerm size=10 direction=horizontal<CR> ',
-	{ desc = 'Open [T]erminal in [H]orizontal split' })
+    { desc = 'Open [T]erminal in [H]orizontal split' })
 
 vim.keymap.set('n', '<leader>q', '[[<C-w>q]] ', { desc = '[Q]uit current window' })
 
@@ -58,9 +61,9 @@ vim.keymap.set('v', '<A-j>', ':MoveBlock(1)<CR>', opts)
 -- vim.keymap.set('n', '<leader>p', '[["+p]]', { desc = '[P]ast from system clipboard' })
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	callback = function()
-		require("lint").try_lint()
-	end,
+    callback = function()
+        require("lint").try_lint()
+    end,
 })
 
 -- [[ Basic Keymaps ]]
@@ -111,14 +114,22 @@ require('lualine').setup {
         lualine_c = { {
             'filename',
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
+            path = 1            -- 0 = just filename, 1 = relative path, 2 = absolute path
         },
             'searchcount',
             'diff'
         },
         lualine_x = {
-            { 'diagnostics', sources = { "nvim_diagnostic" }, symbols = { error = ' ', warn = ' ', info = ' ',
-                hint = ' ' } },
+            {
+                'diagnostics',
+                sources = { "nvim_diagnostic" },
+                symbols = {
+                    error = ' ',
+                    warn = ' ',
+                    info = ' ',
+                    hint = ' '
+                }
+            },
             'encoding',
             'filetype'
         },
@@ -131,7 +142,7 @@ require('lualine').setup {
         lualine_c = { {
             'filename',
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
+            path = 1            -- 0 = just filename, 1 = relative path, 2 = absolute path
         } },
         lualine_x = { 'location' },
         lualine_y = {},
@@ -140,162 +151,3 @@ require('lualine').setup {
     tabline = {},
     extensions = { 'fugitive' }
 }
-
-
--- -- Enable Comment.nvim
--- require('Comment').setup()
-
--- -- Gitsigns
--- -- See `:help gitsigns.txt`
--- require('gitsigns').setup()
-
--- -- [[ Configure Telescope ]]
--- -- See `:help telescope` and `:help telescope.setup()`
--- require('telescope').setup {
---     defaults = {
---         vimgrep_arguments = {
---             'rg',
---             '--color=never',
---             '--no-heading',
---             '--with-filename',
---             '--line-number',
---             '--column',
---             '--smart-case'
---         },
---         selection_caret = "» ",
---         entry_prefix = "  ",
---         initial_mode = "insert",
---         sorting_strategy = "ascending",
---         layout_strategy = "vertical",
---         file_ignore_patterns = {},
---         color_devicons = true,
---         use_less = true,
---         set_env = { ['COLORTERM'] = 'truecolor' },
---     },
---     pickers = {
---         buffers = {
---             sort_lastused = true,
---             -- theme = "dropdown",
---             theme = "ivy",
---             layout_config = { height = 10 },
---             previewer = false,
---             mappings = {
---                 i = { ["<c-d>"] = require("telescope.actions").delete_buffer },
---                 n = { ["<c-d>"] = require("telescope.actions").delete_buffer }
---             }
---         },
---         find_files = {
---             theme = "ivy",
---             layout_config = { height = 10 },
---             previewer = false
---         },
---         oldfiles = {
---             sort_lastused = true,
---             theme = "ivy",
---             layout_config = { height = 10 },
---             previewer = false
---         },
---         command_history = {
---             sort_lastused = true,
---             theme = "ivy",
---             layout_config = { height = 10 },
---             previewer = false
---         },
---         current_buffer_fuzzy_find = {
---             previewer = false
---         }
---     }
--- }
-
--- -- Enable telescope fzf native, if installed
--- pcall(require('telescope').load_extension, 'fzf')
--- -- To get telescope-file-browser loaded and working with telescope,
--- -- you need to call load_extension, somewhere after setup function:
--- require("telescope").load_extension "file_browser"
--- require("telescope").load_extension("undo")
-
--- -- See `:help telescope.builtin`
--- vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
--- --vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
--- vim.keymap.set('n', '<leader>/', function()
---     -- You can pass additional configuration to telescope to change theme, layout, etc.
---     require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
---         winblend = 10,
---         previewer = false,
---     })
--- end, { desc = '[/] Fuzzily search in current buffer]' })
-
--- vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
--- vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
--- vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
--- vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
--- vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
--- vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]umplist' })
-
--- -- [[ Configure Treesitter ]]
--- -- See `:help nvim-treesitter`
--- require('nvim-treesitter.configs').setup {
---     -- Add languages to be installed here that you want installed for treesitter
---     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
-
---     highlight = { enable = true },
---     indent = { enable = true, disable = { 'python' } },
---     incremental_selection = {
---         enable = true,
---         keymaps = {
---             init_selection = '<c-space>',
---             node_incremental = '<c-space>',
---             scope_incremental = '<c-s>',
---             node_decremental = '<c-backspace>',
---         },
---     },
---     textobjects = {
---         select = {
---             enable = true,
---             lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
---             keymaps = {
---                 -- You can use the capture groups defined in textobjects.scm
---                 ['aa'] = '@parameter.outer',
---                 ['ia'] = '@parameter.inner',
---                 ['af'] = '@function.outer',
---                 ['if'] = '@function.inner',
---                 ['ac'] = '@class.outer',
---                 ['ic'] = '@class.inner',
---             },
---         },
---         move = {
---             enable = true,
---             set_jumps = true, -- whether to set jumps in the jumplist
---             goto_next_start = {
---                 [']m'] = '@function.outer',
---                 [']]'] = '@class.outer',
---             },
---             goto_next_end = {
---                 [']M'] = '@function.outer',
---                 [']['] = '@class.outer',
---             },
---             goto_previous_start = {
---                 ['[m'] = '@function.outer',
---                 ['[['] = '@class.outer',
---             },
---             goto_previous_end = {
---                 ['[M'] = '@function.outer',
---                 ['[]'] = '@class.outer',
---             },
---         },
---         swap = {
---             enable = false,
---             swap_next = {
---                 ['<leader>a'] = '@parameter.inner',
---             },
---             swap_previous = {
---                 ['<leader>A'] = '@parameter.inner',
---             },
---         },
---     },
--- }
-
--- -- Diagnostic keymaps
--- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
--- vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
--- --vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)

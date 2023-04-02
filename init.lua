@@ -41,7 +41,8 @@ require('lazy').setup({
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
-  { -- LSP Configuration & Plugins
+  {
+    -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
@@ -57,14 +58,16 @@ require('lazy').setup({
     },
   },
 
-  { -- Autocompletion
+  {
+    -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
-  { -- Adds git releated signs to the gutter, as well as utilities for managing changes
+  { 'folke/which-key.nvim',          opts = {} },
+  {
+    -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
       -- See `:help gitsigns.txt`
@@ -78,7 +81,8 @@ require('lazy').setup({
     },
   },
 
-  { -- Set lualine as statusline
+  {
+    -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
     opts = {
@@ -91,7 +95,8 @@ require('lazy').setup({
     },
   },
 
-  { -- Add indentation guides even on blank lines
+  {
+    -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
@@ -102,7 +107,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -120,7 +125,8 @@ require('lazy').setup({
     end,
   },
 
-  { -- Highlight, edit, and navigate code
+  {
+    -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
@@ -217,6 +223,34 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
+    selection_caret = "» ",
+    initial_mode = "insert",
+    selection_strategy = "reset",
+    sorting_strategy = "ascending",
+    layout_strategy = "horizontal",
+    layout_config = {
+      horizontal = {
+        prompt_position = "top",
+        preview_width = 0.70,
+        results_width = 0.70,
+      },
+      vertical = {
+        mirror = false,
+      },
+      width = 0.87,
+      height = 0.80,
+      preview_cutoff = 120,
+    },
+    file_sorter = require("telescope.sorters").get_fuzzy_file,
+    file_ignore_patterns = { "node_modules" },
+    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    path_display = { "truncate" },
+    borderchars = {
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " },
+      preview = { " " },
+    },
+    winblend = 10,
     mappings = {
       i = {
         ['<C-u>'] = false,
@@ -235,6 +269,11 @@ vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { d
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    borderchars = {
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " },
+      preview = { " " },
+    },
     winblend = 10,
     previewer = false,
   })
@@ -320,10 +359,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagn
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
-  require("lsp-inlayhints").on_attach(client, bufnr)
+  require("lsp-inlayhints").on_attach(client, bufnr, true)
 
   if client.server_capabilities.documentSymbolProvider then
-      require("nvim-navic").attach(client, bufnr)
+    require("nvim-navic").attach(client, bufnr)
   end
 
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -375,16 +414,16 @@ end
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
   -- clangd = {},
-  gopls = {
-    hints = {
-      assignVariableTypes = true,
-      compositeLiteralFields = true,
-      constantValues = true,
-      functionTypeParameters = true,
-      parameterNames = true,
-      rangeVariableTypes = true
-    }  
-  },
+  -- gopls = {
+  --   hints = {
+  --     assignVariableTypes = true,
+  --     compositeLiteralFields = true,
+  --     constantValues = true,
+  --     functionTypeParameters = true,
+  --     parameterNames = true,
+  --     rangeVariableTypes = true
+  --   }
+  -- },
   -- pyright = {},
   -- rust_analyzer = {},
   tsserver = {
@@ -410,9 +449,7 @@ local servers = {
         includeInlayEnumMemberValueHints = true,
       }
     }
-
   },
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -502,104 +539,104 @@ local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 
 local kind_icons = {
-    Text = "",
-    Method = "",
-    Function = "",
-    Constructor = "",
-    Field = "",
-    Variable = "",
-    Class = "ﴯ",
-    Interface = "",
-    Module = "",
-    Property = "ﰠ",
-    Unit = "",
-    Value = "",
-    Enum = "",
-    Keyword = "",
-    Snippet = "",
-    Color = "",
-    File = "",
-    Reference = "",
-    Folder = "",
-    EnumMember = "",
-    Constant = "",
-    Struct = "",
-    Event = "",
-    Operator = "",
-    TypeParameter = "",
+  Text = "",
+  Method = "",
+  Function = "",
+  Constructor = "",
+  Field = "",
+  Variable = "",
+  Class = "ﴯ",
+  Interface = "",
+  Module = "",
+  Property = "ﰠ",
+  Unit = "",
+  Value = "",
+  Enum = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
 }
 
 
 cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
     },
-    window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-    },
-    mapping = cmp.mapping.preset.insert {
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        },
-        ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-    },
-    sources = {
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    },
-    formatting = {
-        format = function(entry, vim_item)
-            -- Kind icons
-            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatenates the icons with the name of the item kind
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+  formatting = {
+    format = function(entry, vim_item)
+      -- Kind icons
+      vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatenates the icons with the name of the item kind
 
 
-            -- Source
-            -- vim_item.menu = ({
-            --   nvim_lsp = "[LSP]",
-            --   buffer = "[Buffer]",
-            --   luasnip = "[Snip]",
-            --   nvim_lua = "[Lua]",
-            --   treesitter = "[Treesitter]",
-            --   path = "[Path]",
-            --   nvim_lsp_signature_help = "[Signature]",
-            -- })[entry.source.name]
-            -- if vim_item ~= "Snippet" then
-            return vim_item
-            -- end
-            -- end
-        end,
-    },
+      -- Source
+      -- vim_item.menu = ({
+      --   nvim_lsp = "[LSP]",
+      --   buffer = "[Buffer]",
+      --   luasnip = "[Snip]",
+      --   nvim_lua = "[Lua]",
+      --   treesitter = "[Treesitter]",
+      --   path = "[Path]",
+      --   nvim_lsp_signature_help = "[Signature]",
+      -- })[entry.source.name]
+      -- if vim_item ~= "Snippet" then
+      return vim_item
+      -- end
+      -- end
+    end,
+  },
 }
 
 -- Update gutter signs for LSP diagnostics
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
 -- -- Gitsigns
@@ -610,9 +647,9 @@ require('gitsigns').setup()
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
 vim.cmd [[let &fcs='eob: ']]
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
+  vim.lsp.diagnostic.on_publish_diagnostics, {
     update_in_insert = true,
-}
+  }
 )
 vim.cmd [[set cmdheight=0]]
 vim.cmd [[set winbar+=%{%v:lua.require'nvim-navic'.get_location()%}]]
@@ -633,4 +670,30 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.cmd[[hi! link LspInlayHint Comment]]
+vim.cmd [[hi! link LspInlayHint Comment]]
+
+require("lspconfig").gopls.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    gopls = {
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+      experimentalPostfixCompletions = true,
+      analyses = {
+        unusedparams = true,
+        shadow = true,
+      },
+      staticcheck = true,
+    },
+  },
+  init_options = {
+    usePlaceholders = true,
+  },
+})
