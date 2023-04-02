@@ -190,7 +190,7 @@ vim.wo.signcolumn = 'yes'
 -- Decrease update time
 vim.o.updatetime = 250
 vim.o.timeout = true
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 50
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -671,6 +671,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 vim.cmd [[hi! link LspInlayHint Comment]]
+vim.cmd [[set ttyfast]]
+vim.cmd [[set lazyredraw]]
+
+vim.cmd [[set foldenable]]
+vim.cmd [[set foldlevelstart=99]]
+vim.cmd [[set foldmethod=syntax]]
+
 
 require("lspconfig").gopls.setup({
   capabilities = capabilities,
