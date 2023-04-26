@@ -1,14 +1,20 @@
 -- Enable relative line numbers
 vim.opt.relativenumber = true
 
-vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR> ', { desc = '[C]lose Buffer' })
+-- vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR> ', { desc = '[C]lose Buffer' })
 vim.keymap.set('n', '<leader>q', '[[<C-w>q]] ', { desc = '[Q]uit current window' })
 
 -- Resume latest Telescope window
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
+-- LazyGit
+vim.keymap.set('n', '<leader>lg', '<Cmd>LazyGit<CR> ', { desc = '[L]azy[G]it' })
+
 -- Toggle NvimTree
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>', { desc = 'Toggle File [E]xplorer' })
+
+-- Close current buffer
+vim.keymap.set('n', '<leader>bc', '<Cmd>BufferClose<CR>', { desc = '[B]uffer [C]lose' })
 
 -- Keymaps for moving between splits
 vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left, { desc = 'Move to left split' })
@@ -114,7 +120,7 @@ require('lualine').setup {
         lualine_c = { {
             'filename',
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 1            -- 0 = just filename, 1 = relative path, 2 = absolute path
+            path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
         },
             'searchcount',
             'diff'
@@ -142,7 +148,7 @@ require('lualine').setup {
         lualine_c = { {
             'filename',
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 1            -- 0 = just filename, 1 = relative path, 2 = absolute path
+            path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
         } },
         lualine_x = { 'location' },
         lualine_y = {},

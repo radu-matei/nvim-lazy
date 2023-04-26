@@ -3,103 +3,106 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-    {'mrjones2014/smart-splits.nvim'},
-    { 'echasnovski/mini.nvim', version = false },
-    { 'nvim-telescope/telescope-file-browser.nvim' },
-    { 'romgrk/barbar.nvim', wants = 'nvim-web-devicons' },
-    {'akinsho/toggleterm.nvim', tag = 'v2.5.0', config = function() require('toggleterm').setup() end },
-    {'folke/trouble.nvim', requires = 'nvim-tree/nvim-web-devicons', config = function() require('trouble').setup() end },
-    { 'stevearc/dressing.nvim' },
+  { 'mrjones2014/smart-splits.nvim' },
+  { 'echasnovski/mini.nvim', version = false },
+  { 'nvim-telescope/telescope-file-browser.nvim' },
+  { 'romgrk/barbar.nvim', wants = 'nvim-web-devicons' },
+  { 'akinsho/toggleterm.nvim', tag = 'v2.5.0', config = function() require('toggleterm').setup() end },
+  { 'folke/trouble.nvim', requires = 'nvim-tree/nvim-web-devicons', config = function() require('trouble').setup() end },
+  { 'stevearc/dressing.nvim' },
+  { 'ellisonleao/gruvbox.nvim' },
+  { 'sainnhe/gruvbox-material' },
 
-    { 'pwntester/octo.nvim',
-        requires = {
-          'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim',
-          'kyazdani42/nvim-web-devicons'
-        },
-        config = function() require 'octo'.setup() end
-      },
-      { 'simrat39/inlay-hints.nvim', config = function()
-        require('inlay-hints').setup()
-      end 
+  { 'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons'
     },
-    { 'simrat39/rust-tools.nvim' },
-      {
-        'ray-x/lsp_signature.nvim',
-        config = function()
-          require('lsp_signature').setup({
-            floating_window = true,
-            hint_prefix = '',
-            max_height = 30,
-            max_width = 140,
-            doc_lines = 15,
-            hint_enable = false,
-            toggle_key = '<M-x>'
-          })
-        end
-      },
-      { 'rust-lang/rust.vim' },
-      { 'folke/lsp-colors.nvim', config = function()
-        require('lsp-colors').setup()
-      end
-      },
-      { 'lukas-reineke/indent-blankline.nvim', config = function()
-        require('indent_blankline').setup {
-          show_current_context = true,
-        }
-      end },
-      { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' },
+    config = function() require 'octo'.setup() end
+  },
+  { 'simrat39/inlay-hints.nvim', config = function()
+    require('inlay-hints').setup()
+  end
+  },
+  { 'simrat39/rust-tools.nvim' },
+  {
+    'ray-x/lsp_signature.nvim',
+    config = function()
+      require('lsp_signature').setup({
+        floating_window = true,
+        hint_prefix = '',
+        max_height = 30,
+        max_width = 140,
+        doc_lines = 15,
+        hint_enable = false,
+        toggle_key = '<M-x>'
+      })
+    end
+  },
+  { 'rust-lang/rust.vim' },
+  { 'folke/lsp-colors.nvim', config = function()
+    require('lsp-colors').setup()
+  end
+  },
+  { 'lukas-reineke/indent-blankline.nvim', config = function()
+    require('indent_blankline').setup {
+      show_current_context = true,
+    }
+  end },
+  { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' },
 
-      { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function()
-        require('nvim-navic').setup {
-          icons = {
-            File = ' ',
-            Module = ' ',
-            Namespace = ' ',
-            Package = ' ',
-            Class = ' ',
-            Method = ' ',
-            Property = ' ',
-            Field = ' ',
-            Constructor = ' ',
-            Enum = ' ',
-            Interface = ' ',
-            Function = ' ',
-            Variable = ' ',
-            Constant = ' ',
-            String = ' ',
-            Number = ' ',
-            Boolean = ' ',
-            Array = ' ',
-            Object = ' ',
-            Key = ' ',
-            Null = ' ',
-            EnumMember = ' ',
-            Struct = ' ',
-            Event = ' ',
-            Operator = ' ',
-            TypeParameter = ' '
-          },
-    
-          highlight = false,
-          separator = " > ",
-          depth_limit = 0,
-          depth_limit_indicator = "..",
-          safe_output = true
-        }
-    
-      end },
-      {'fedepujol/move.nvim'},
-      {'savq/melange-nvim'},
-      {
-        'brymer-meneses/grammar-guard.nvim',
-        requires = {
-          'neovim/nvim-lspconfig',
-          'williamboman/nvim-lsp-installer'
-        }
-    },
-    {'mfussenegger/nvim-lint'},
-    {'debugloop/telescope-undo.nvim'},
-    {'lvimuser/lsp-inlayhints.nvim', config = function() require("lsp-inlayhints").setup({
+  { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig', config = function()
+    require('nvim-navic').setup {
+      icons = {
+        File = ' ',
+        Module = ' ',
+        Namespace = ' ',
+        Package = ' ',
+        Class = ' ',
+        Method = ' ',
+        Property = ' ',
+        Field = ' ',
+        Constructor = ' ',
+        Enum = ' ',
+        Interface = ' ',
+        Function = ' ',
+        Variable = ' ',
+        Constant = ' ',
+        String = ' ',
+        Number = ' ',
+        Boolean = ' ',
+        Array = ' ',
+        Object = ' ',
+        Key = ' ',
+        Null = ' ',
+        EnumMember = ' ',
+        Struct = ' ',
+        Event = ' ',
+        Operator = ' ',
+        TypeParameter = ' '
+      },
+
+      highlight = false,
+      separator = " > ",
+      depth_limit = 0,
+      depth_limit_indicator = "..",
+      safe_output = true
+    }
+
+  end },
+  { 'fedepujol/move.nvim' },
+  { 'savq/melange-nvim' },
+  {
+    'brymer-meneses/grammar-guard.nvim',
+    requires = {
+      'neovim/nvim-lspconfig',
+      'williamboman/nvim-lsp-installer'
+    }
+  },
+  { 'mfussenegger/nvim-lint' },
+  { 'debugloop/telescope-undo.nvim' },
+  { 'kdheepak/lazygit.nvim' },
+  { 'lvimuser/lsp-inlayhints.nvim', config = function() require("lsp-inlayhints").setup({
       inlay_hints = {
         parameter_hints = {
           show = true,
@@ -131,6 +134,7 @@ return {
       },
       enabled_at_startup = true,
       debug_mode = false,
-    }) end},
+    })
+  end },
 
 }

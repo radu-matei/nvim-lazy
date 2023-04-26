@@ -65,7 +65,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',          opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -107,7 +107,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',         opts = {} },
+  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -158,7 +158,7 @@ require('lazy').setup({
 
 -- Set colorscheme
 vim.o.termguicolors = true
-vim.cmd [[colorscheme melange]]
+vim.cmd [[colorscheme gruvbox-material]]
 
 -- Set highlight on search
 vim.o.hlsearch = true
@@ -648,8 +648,8 @@ vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
 vim.cmd [[let &fcs='eob: ']]
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    update_in_insert = true,
-  }
+  update_in_insert = true,
+}
 )
 vim.cmd [[set cmdheight=0]]
 vim.cmd [[set winbar+=%{%v:lua.require'nvim-navic'.get_location()%}]]
@@ -673,6 +673,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.cmd [[hi! link LspInlayHint Comment]]
 vim.cmd [[set ttyfast]]
 vim.cmd [[set lazyredraw]]
+
+vim.cmd [[set background=light]]
 
 vim.cmd [[set foldenable]]
 vim.cmd [[set foldlevelstart=99]]
