@@ -101,35 +101,55 @@ require('lazy').setup({
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = {
-      -- add any options here
+      cmdline = {
+        enabled = true,         -- enables the Noice cmdline UI
+        view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
+        opts = {},              -- global options for the cmdline. See section on views
+        ---@type table<string, CmdlineFormat>
+        format = {
+          -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
+          -- view: (default is cmdline view)
+          -- opts: any options passed to the view
+          -- icon_hl_group: optional hl_group for the icon
+          -- title: set to anything or empty string to hide
+          cmdline = { pattern = "^:", icon = "", lang = "vim" },
+          search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+          search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+          filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
+          lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
+          help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
+          input = {}, -- Used by input()
+          -- lua = false, -- to disable a format, set to `false`
+        },
+      },
+      messages = {
+        enabled = false,
+      },
+      popupmenu = {
+        enabled = false, -- enables the Noice popupmenu UI
+      },
+      -- You can add any custom commands below that will be available with `:Noice command`
+      ---@type table<string, NoiceCommand>
+      notify = {
+        enabled = false,
+      },
       lsp = {
+        progress = {
+          enabled = false,
+        },
+        hover = {
+          enabled = false,
+        },
         signature = {
-          enabled = false
-        }
-      },
-      views = {
-        cmdline_popup = {
-          border = {
-            style = "none",
-            padding = { 2, 3 },
-          },
-          filter_options = {},
-          win_options = {
-            winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-          },
+          enabled = false,
+        },
+        message = {
+          enabled = false,
         },
       },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            kind = "",
-            find = "written",
-          },
-          opts = { skip = true },
-        },
+      health = {
+        checker = false,
       },
-
     },
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -140,6 +160,7 @@ require('lazy').setup({
       "rcarriga/nvim-notify",
     }
   },
+  { 'nvim-telescope/telescope-ui-select.nvim' },
   {
     'folke/trouble.nvim',
     requires = 'nvim-tree/nvim-web-devicons',
@@ -496,6 +517,32 @@ require('telescope').setup {
         },
       },
     },
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+        previewer = false,
+        borderchars = {
+          prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+          results = { " " },
+          preview = { " " },
+        },
+
+      }
+
+      -- pseudo code / specification for writing custom displays, like the one
+      -- for "codeactions"
+      -- specific_opts = {
+      --   [kind] = {
+      --     make_indexed = function(items) -> indexed_items, width,
+      --     make_displayer = function(widths) -> displayer
+      --     make_display = function(displayer) -> function(e)
+      --     make_ordinal = function(e) -> string
+      --   },
+      --   -- for example to disable the custom builtin "codeactions" display
+      --      do the following
+      --   codeactions = false,
+      -- }
+    }
   },
   defaults = {
     color_devicons = false,
@@ -547,6 +594,7 @@ end
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 require("telescope").load_extension "file_browser"
+require("telescope").load_extension("ui-select")
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
