@@ -91,7 +91,33 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
+  {
+    "aaronhallaert/advanced-git-search.nvim",
+    config = function()
+      -- optional: setup telescope before loading the extension
+      require("telescope").setup {
+        -- move this to the place where you call the telescope setup function
+        extensions = {
+          advanced_git_search = {
+            -- See Config
+            diff_plugin = "diffview",
+          }
+        }
+      }
 
+      require("telescope").load_extension("advanced_git_search")
+    end,
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      -- to show diff splits and open commits in browser
+      "tpope/vim-fugitive",
+      -- to open commits in browser with fugitive
+      "tpope/vim-rhubarb",
+      -- optional: to replace the diff from fugitive with diffview.nvim
+      -- (fugitive is still needed to open in browser)
+      "sindrets/diffview.nvim",
+    },
+  },
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',    opts = {} },
   { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
@@ -190,34 +216,6 @@ require('lazy').setup({
   },
   { 'fedepujol/move.nvim' },
   {
-    "aaronhallaert/advanced-git-search.nvim",
-    config = function()
-      -- optional: setup telescope before loading the extension
-      require("telescope").setup {
-        -- move this to the place where you call the telescope setup function
-        extensions = {
-          advanced_git_search = {
-            -- See Config
-          }
-        }
-      }
-
-      require("telescope").load_extension("advanced_git_search")
-    end,
-    dependencies = {
-      --- See dependencies
-      "nvim-telescope/telescope.nvim",
-      -- to show diff splits and open commits in browser
-      "tpope/vim-fugitive",
-      -- to open commits in browser with fugitive
-      "tpope/vim-rhubarb",
-      -- optional: to replace the diff from fugitive with diffview.nvim
-      -- (fugitive is still needed to open in browser)
-      -- "sindrets/diffview.nvim",
-    },
-  },
-
-  {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
@@ -311,7 +309,7 @@ require('lazy').setup({
         max_height = 30,
         max_width = 140,
         doc_lines = 15,
-        hint_enable = true,
+        hint_enable = false,
         toggle_key = '<M-x>'
       })
     end
@@ -442,6 +440,7 @@ vim.wo.number = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+-- vim.o.background = "light"
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
@@ -499,12 +498,12 @@ require('telescope').setup {
   extensions = {
     file_browser = {
       auto_depth = true,
-      -- select_buffer = true,
+      select_buffer = true,
       grouped = true,
-      -- respect_gitignore = false,
+      respect_gitignore = true,
       -- collapse_dirs = true,
       initial_mode = "normal",
-      theme = "ivy",
+      -- theme = "ivy",
       -- disables netrw and use telescope-file-browser in its place
       hijack_netrw = true,
       mappings = {
@@ -774,6 +773,18 @@ local servers = {
         includeInlayEnumMemberValueHints = true,
       }
     },
+    pyright = {
+      inlayHints = {
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      }
+    },
+
     javascript = {
       inlayHints = {
         includeInlayParameterNameHints = 'all',
@@ -858,6 +869,14 @@ local kind_icons = {
 
 
 cmp.setup {
+  enabled = function()
+    if require "cmp.config.context".in_treesitter_capture("comment") == true or require "cmp.config.context".in_syntax_group("Comment") then
+      return false
+    else
+      return true
+    end
+  end,
+
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
