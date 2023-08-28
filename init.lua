@@ -122,7 +122,8 @@ require('lazy').setup({
   { 'folke/which-key.nvim',    opts = {} },
   { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
   { 'cormacrelf/dark-notify' },
-
+  { 'almo7aya/openingh.nvim' },
+  { 'NeogitOrg/neogit' },
   {
     "folke/noice.nvim",
     event = "VeryLazy",
@@ -310,7 +311,8 @@ require('lazy').setup({
         max_width = 140,
         doc_lines = 15,
         hint_enable = false,
-        toggle_key = '<M-x>'
+        toggle_key = '<M-x>',
+        toggle_key_flip_floatwin_setting = true
       })
     end
   },
@@ -759,7 +761,6 @@ local servers = {
   --     rangeVariableTypes = true
   --   }
   -- },
-  -- pyright = {},
   -- rust_analyzer = {},
   tsserver = {
     typescript = {
@@ -807,6 +808,7 @@ local servers = {
 
 -- Setup neovim lua configuration
 require('neodev').setup()
+require('neogit').setup()
 
 require('nvim-web-devicons').setup()
 
@@ -944,8 +946,7 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-
-require('dark_notify').run()
+-- require('dark_notify').run()
 require("bufferline").setup {}
 require("lspconfig").gopls.setup({
   capabilities = capabilities,
@@ -1002,4 +1003,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.cmd [[hi! link LspInlayHint Comment]]
 vim.cmd [[set ttyfast]]
 vim.cmd [[:command! -nargs=1 Browse silent execute '!open' shellescape(<q-args>,1)]]
+vim.cmd [[autocmd User TelescopePreviewerLoaded setlocal number]]
+vim.cmd [[set guicursor=n-v-c-i:block]]
+
+
 -- vim.cmd [[set lazyredraw]]
